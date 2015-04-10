@@ -44,7 +44,7 @@
                                             <input type="hidden" name="user_type_id" value="2" />
                                             <button class="btn-xs btn-primary" style="width: 60px;">Org</button>
                                         </form>
-                                        <form class="form-horizontal" role="form" method="POST" action="/users/pending" enctype="multipart/form-data" onsubmit="return confirm('Are you sure you want to delete?')">
+                                        <form class="form-horizontal" role="form" method="POST" action="/users/pending/del" enctype="multipart/form-data" onsubmit="return confirm('Are you sure you want to delete?')">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             <input type="hidden" name="id" value="{{$pen->id}}" />
                                             <button class="btn-xs btn-danger" style="width: 60px;">Delete</button>

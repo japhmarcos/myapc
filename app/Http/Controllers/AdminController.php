@@ -627,7 +627,7 @@ class AdminController extends Controller {
 		$id = Input::get('id');
 		User::where('id', $id)->delete();
 		Flash::message('User deleted!');
-		return redirect('/users/pending');
+		return Redirect::back();
 	}
 
 	public function userdel()

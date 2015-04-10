@@ -103,8 +103,8 @@ Route::group(['middleware' => 'admin'], function()
 	Route::get('/org/list', 'AdminController@orglist');
 	Route::get('/org/{id}', 'AdminController@orgarticle'); 
 
-	Route::resource('/users/pending', 'AdminController@pendel');	
-	Route::resource('/users', 'AdminController@userdel');	
+	Route::resource('/users/pending/del', 'AdminController@pendel');	
+	Route::resource('/users/del', 'AdminController@userdel');	
 	Route::get('/users', 'AdminController@current');
 	Route::get('/users/pending', 'AdminController@pending');
 	Route::put('/users/pending', 'AdminController@approve');
