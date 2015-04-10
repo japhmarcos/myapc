@@ -65,7 +65,6 @@
                                 <li><a href="http://www.apc.edu.ph/flavio/Apps/StudentAssessment.php" target="_blank">Registration/ Assessment Form Viewer</a></li>
                                 <li><a href="http://www.apc.edu.ph/flavio/Apps/SubjectOffering.php" target="_blank">Master List of Subject Offerings Viewer</a></li>
                                 <li><a href="/directory">Office Directory</a></li>
-                                <li><a href="/bus">Bus Schedules</a></li>
                             </ul>
                         </li>
 
