@@ -69,13 +69,11 @@ class HomeController extends Controller {
 
 	public function update()
 	{
-		$pane = '1';
-		return view('home.update',compact('pane'));
+		return view('home.update');
 	}
 
 	public function updateaccount(UpdateAccount $request)
 	{
-		$pane = '1';
 		if(Input::file('image') != null)
 		{
 			$image = Input::file('image');
@@ -93,12 +91,11 @@ class HomeController extends Controller {
 		}
 		User::find(Auth::user()->id)->update($user);
 		Flash::message('Account updated!');
-		return redirect('/account/update')->with('pane',$pane);
+		return redirect('/account/update');
 	}
 
 	public function updatepass(UpdatePassword $request)
 	{
-		$pane = '2';
 		if(Hash::check(Input::get('current_password'), Auth::user()->password))
 		{
 			$password = Input::get('password');
@@ -111,37 +108,35 @@ class HomeController extends Controller {
 		{
 			Flash::error('Current password does not match our records!');
 		}
-		return Redirect::back()->with('pane',$pane);
+		return Redirect::back();
 	}
 
 	public function updateemail(UpdateEmail $request)
 	{
-		$pane = '2';
 		$email = $request->all();
 		User::find(Auth::user()->id)->update($email);
 		Flash::message('Email changed!');
-		return Redirect::back()->with('pane',$pane);
+		return Redirect::back();
 	}
 
 	public function search()
 	{
 		$input = Input::get('input');
-		if(Auth::guest())
-		{
-			$posts = Post::where('status', '=', '1')->where('module_id', '!=', '2')->where(function($query) use ($input){
-					$query->where('title', 'LIKE', '%'.$input.'%');
-					$query->orWhere('body', 'LIKE', '%'.$input.'%');
-					$query->orWhere('author', 'LIKE', '%'.$input.'%');
-				})->orderBy('created_at', 'desc')->get();
-		}
-		else
-		{
-			$posts = Post::where('status', '=', '1')->where(function($query) use ($input){
-					$query->where('title', 'LIKE', '%'.$input.'%');
-					$query->orWhere('body', 'LIKE', '%'.$input.'%');
-					$query->orWhere('author', 'LIKE', '%'.$input.'%');
-				})->orderBy('created_at', 'desc')->get();
-		}
+		$news = Post::where('status', '=', '1')->where('module_id', '=', '1')->where(function($query) use ($input){
+				$query->where('title', 'LIKE', '%'.$input.'%');
+				$query->orWhere('body', 'LIKE', '%'.$input.'%');
+				$query->orWhere('author', 'LIKE', '%'.$input.'%');
+			})->orderBy('created_at', 'desc')->get();
+		$announcements = Post::where('status', '=', '1')->where('module_id', '=', '2')->where(function($query) use ($input){
+				$query->where('title', 'LIKE', '%'.$input.'%');
+				$query->orWhere('body', 'LIKE', '%'.$input.'%');
+				$query->orWhere('author', 'LIKE', '%'.$input.'%');
+			})->orderBy('created_at', 'desc')->get();
+		$orgs = Post::where('status', '=', '1')->where('module_id', '=', '3')->where(function($query) use ($input){
+				$query->where('title', 'LIKE', '%'.$input.'%');
+				$query->orWhere('body', 'LIKE', '%'.$input.'%');
+				$query->orWhere('author', 'LIKE', '%'.$input.'%');
+			})->orderBy('created_at', 'desc')->get();
 		
 		$events = Event::where('status', '=', '1')->where(function($query) use ($input){
 				$query->where('title', 'LIKE', '%'.$input.'%');
@@ -149,7 +144,7 @@ class HomeController extends Controller {
 			})->orderBy('created_at', 'desc')->get();
 		
 		
-		return view('home.search', compact('posts', 'events', 'input'));
+		return view('home.search', compact('news', 'announcements', 'orgs', 'events', 'input'));
 	}
 
 }

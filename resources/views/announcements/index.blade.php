@@ -50,7 +50,7 @@
 
                     <!-- <div class="col-md-3">                          
                         <div class="text-column this-animate" data-animate="fadeInRight">                                    
-                            @include('layouts.sidebar')                            
+                            @include('announcements.sidebar')                            
                         </div>                              
                     </div> -->
                 </div>                        

@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Input;
 use Webpatser\Uuid\Uuid;
 
 use Request;
-use App\Post as News;
+use App\Post as Post;
+use App\Event as Event;
 use App\Comment as Comment;
 use App\User as User;
 use Redirect;
 use Auth;
+use DateTime;
 
 class NewsController extends Controller {
 
@@ -21,7 +23,7 @@ class NewsController extends Controller {
 	 */
 	public function index()
 	{
-		$news = News::where('status', '=', '1')->where('module_id', '=', '1')->orderBy('created_at', 'desc')->paginate(3);
+		$news = Post::where('status', '=', '1')->where('module_id', '=', '1')->orderBy('created_at', 'desc')->paginate(6);
 		return view('news.index', compact('news'));
 	}
 
@@ -54,10 +56,13 @@ class NewsController extends Controller {
 	 */
 	public function show($id)
 	{
-		$article = News::find($id);
+		$article = Post::find($id);
 		$comments = Comment::where('post_id', $id)->orderBy('created_at', 'asc')->get();
 		$count = Comment::where('post_id', $id)->count();
-		return view('news.details', compact('article', 'comments', 'count'));
+
+		$announcements = Post::where('module_id', '=', '2')->orderBy('created_at', 'asc')->take(3)->get();
+		$events = Event::where('status', '=', '1')->where('date_start', '>=', new DateTime('today'))->orderBy('date_start', 'asc')->take(3)->get();
+		return view('news.details', compact('article', 'comments', 'count', 'announcements', 'events'));
 	}
 
 	public function newscomment($id)

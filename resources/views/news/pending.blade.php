@@ -75,27 +75,4 @@
             </div>
         </div>                                            
     </div>
-    
-    <!-- POP-UP
-    <div class="message-box message-box-warning animated fadeIn" id="mb-delete">
-        <div class="mb-container">
-            <div class="mb-middle">
-                <div class="mb-title"><span class="fa fa-sign-out"></span>Are you sure you want to <strong>delete</strong> ?</div>
-                <div class="mb-content">
-                    <p>Are you sure you want to delete?</p>                    
-                    <p>Press No if you want to cancel. Press Yes to delete.</p>
-                </div>
-                <div class="mb-footer">
-                    <div class="pull-right">
-                        <form class="form-horizontal" role="form" method="POST" action="/news/pending" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="id" value="{{$npen->id}}" />
-                            <button class="btn btn-success btn-lg">Yes</button>
-                            <button class="btn btn-default btn-lg mb-control-close">No</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 @stop

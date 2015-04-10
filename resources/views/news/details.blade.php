@@ -78,11 +78,11 @@
                             @endif         
                         </div>
                     </div>
-                    <!-- <div class="col-md-3">                                
+                    <div class="col-md-3">                                
                         <div class="text-column this-animate" data-animate="fadeInRight">                                    
-                            @include('layouts.sidebar')                            
+                            @include('news.sidebar')                            
                         </div>                                
-                    </div> -->
+                    </div>
                 </div>                        
             </div>
         </div>

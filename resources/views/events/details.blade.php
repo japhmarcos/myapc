@@ -32,8 +32,30 @@
                             @endif
                             <h2>{{$article->title}}</h2>
                             <span class="blog-date">{{ date("F d, Y l", strtotime($article->created_at)) }} / {{$count}} Comments / By {{$article->author->first_name}}  / {{$article->attendee->count()}} Attendees</span>
-                            {!! html_entity_decode($article->body) !!}                                        
+                            <br>
+                            <span class="fa fa-calendar"></span>&nbsp;&nbsp;&nbsp;{{ date("F d, Y", strtotime($article->date_start)) }} <br>
+                            <span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;&nbsp;{{ date("g:i A", strtotime($article->time_start))}} to {{date("g:i A", strtotime($article->time_end))}}<br>
+                            <span class="fa fa-map-marker"></span><strong>&nbsp;&nbsp;&nbsp;{{ $article->location}}</strong><br>
+                            <hr>
+                            <h5>Event Description:</h5>
+                            <p>
+                            {!! html_entity_decode($article->body) !!}
+                            </p>                                        
                         </div>
+
+                        <div class="col-md-12">                                
+                        <div class="text-column this-animate" data-animate="fadeInRight">  
+                            @if(!Auth::guest() && Auth::user()->id != $attendee)
+                                <div class="col-md-2 pull-right">
+                                    <form class="form-horizontal" role="form" method="POST" action="/events/details/{{$article->id}}/attend" enctype="multipart/form-data">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="event_id" value="{{$article->id}}" />
+                                        <button type="submit" class="btn btn-primary pull-right">Going</button>
+                                    </form>
+                                </div>
+                            @endif                             
+                        </div>                 
+                    </div>
                         
                         <div class="text-column">
                             <h3>Comments</h3>
@@ -79,23 +101,11 @@
                             @endif         
                         </div>
                     </div>
-                    <div class="col-md-3">                                
-                        <div class="text-column this-animate" data-animate="fadeInRight">  
-                            @if(!Auth::guest() && Auth::user()->id != $attendee)
-                                <div class="col-md-1">
-                                    <form class="form-horizontal" role="form" method="POST" action="/events/details/{{$article->id}}/attend" enctype="multipart/form-data">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="event_id" value="{{$article->id}}" />
-                                        <button type="submit" class="btn btn-primary pull-right">Going</button>
-                                    </form>
-                                </div>
-                            @endif                             
-                        </div>                 
-                    </div>
+
 
                      <div class="col-md-3">                          
                         <div class="text-column this-animate" data-animate="fadeInRight">                                    
-                            @include('layouts.sidebar')                    
+                            @include('events.sidebar')                    
                         </div>                            
                     </div>     
                     

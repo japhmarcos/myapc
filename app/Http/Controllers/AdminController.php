@@ -18,6 +18,7 @@ use Webpatser\Uuid\Uuid;
 use Auth;
 use Html;
 use Redirect;
+use DateTime;
 
 class AdminController extends Controller {
 	
@@ -35,7 +36,7 @@ class AdminController extends Controller {
 			$counte = Event::where('status', '=', '0')->orWhere('status', '=', '2')->orWhere('status', '=', '3')->count();
 
 			$news = Post::where('module_id', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'desc')->take(3)->get();
-			$events = Event::where('status', '=', '1')->orderBy('created_at', 'desc')->take(3)->get();
+			$events = Event::where('status', '=', '1')->where('date_start', '>=', new DateTime('today'))->orderBy('date_start', 'asc')->take(3)->get();
 			$users = User::where('status', '=', '1')->where('user_type_id', '!=', '1')->take(6)->get();
 		}
 		else
@@ -51,7 +52,7 @@ class AdminController extends Controller {
 			$counte = Event::where('user_id', Auth::user()->id)->where('status', '=', '0')->orWhere('status', '=', '2')->orWhere('status', '=', '3')->count();
 
 			$news = Post::where('module_id', '=', '1')->where('user_id', Auth::user()->id)->where('status', '=', '1')->take(3)->get();
-			$events = Event::where('user_id', Auth::user()->id)->where('status', '=', '1')->where('date_start', '>', date("Y-m-d"))->orderBy('date_start', 'desc')->take(3)->get();
+			$events = Event::where('user_id', Auth::user()->id)->where('status', '=', '1')->where('date_start', '>=', new DateTime('today'))->orderBy('date_start', 'asc')->take(3)->get();
 			$users = Registration::where('status', '=', '0')->where('post_id', $org)->take(6)->get();
 		}
 		return view('admin.index', compact('count', 'countp', 'countn', 'counte', 'news', 'events', 'users'));
@@ -62,12 +63,26 @@ class AdminController extends Controller {
 		$keyword = Input::get('keyword');
 		if(Auth::user()->user_type_id == '1')
 		{
-			$posts = Post::where('title', 'LIKE', '%'.$keyword.'%')->orWhere('body', 'LIKE', '%'.$keyword.'%')->orWhere('author', 'LIKE', '%'.$keyword.'%')->orderBy('created_at', 'desc')->get();
+			$news = Post::where('module_id', '=', '1')->where(function($query) use ($keyword){
+					$query->where('title', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('body', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('author', 'LIKE', '%'.$keyword.'%');
+				})->orderBy('created_at', 'desc')->get();
+			$announcements = Post::where('module_id', '=', '2')->where(function($query) use ($keyword){
+					$query->where('title', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('body', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('author', 'LIKE', '%'.$keyword.'%');
+				})->orderBy('created_at', 'desc')->get();
+			$orgs = Post::where('module_id', '=', '3')->where(function($query) use ($keyword){
+					$query->where('title', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('body', 'LIKE', '%'.$keyword.'%');
+					$query->orWhere('author', 'LIKE', '%'.$keyword.'%');
+				})->orderBy('created_at', 'desc')->get();
 			$events = Event::where('title', 'LIKE', '%'.$keyword.'%')->orWhere('body', 'LIKE', '%'.$keyword.'%')->orderBy('created_at', 'desc')->get();
 		}
 		else
 		{
-			$posts = Post::where('user_id', Auth::user()->id)->where(function($query) use ($keyword){
+			$news = Post::where('user_id', Auth::user()->id)->where('module_id', '=', '1')->where(function($query) use ($keyword){
 					$query->where('title', 'LIKE', '%'.$keyword.'%');
 					$query->orWhere('body', 'LIKE', '%'.$keyword.'%');
 					$query->orWhere('author', 'LIKE', '%'.$keyword.'%');
@@ -78,7 +93,7 @@ class AdminController extends Controller {
 				})->orderBy('created_at', 'desc')->get();
 		}
 		
-		return view('admin.search', compact('posts', 'events', 'keyword'));
+		return view('admin.search', compact('news', 'announcements', 'orgs', 'events', 'keyword'));
 	}
 
 	// news

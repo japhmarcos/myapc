@@ -1,4 +1,4 @@
-@extends('layouts.front')
+<!-- @extends('layouts.front') -->
 @section('head')
     @parent
     <title>MyAPC | Announcements</title>
@@ -73,11 +73,11 @@
                             @endif         
                         </div>
                     </div>
-                    <!-- <div class="col-md-3">                                
+                    <div class="col-md-3">                                
                         <div class="text-column this-animate" data-animate="fadeInRight">                                    
-                            @include('layouts.sidebar')
+                            @include('announcements.sidebar')
                         </div>                                 
-                    </div> -->
+                    </div>
                 </div>                        
             </div>
         </div>

@@ -32,7 +32,7 @@
                             <form role="form" action="/searchresults" method="POST">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="input-group">
-                                    <input name="input" type="text" class="form-control" placeholder="Search..."/>
+                                    <input name="input" type="text" class="form-control" required placeholder="Search..."/>
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary"><span class="fa fa-search"></span></button>
                                     </div>

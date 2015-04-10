@@ -7,6 +7,7 @@ use Webpatser\Uuid\Uuid;
 
 use Request;
 use App\Event as Event;
+use App\Post as Post;
 use App\Comment as Comment;
 use App\Attendee as Attendee;
 use App\User as User;
@@ -23,8 +24,10 @@ class EventsController extends Controller {
 	 */
 	public function index()
 	{
-		$events = Event::where('status', '=', '1')->orderBy('created_at', 'desc')->paginate(1);
-		return view('events.index', compact('events'));
+		$events = Event::where('status', '=', '1')->orderBy('created_at', 'desc')->paginate(6);
+		$announcements = Post::where('module_id', '=', '2')->orderBy('created_at', 'desc')->take(3)->get();
+		$news = Post::where('module_id', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'desc')->take(3)->get();
+		return view('events.index', compact('events', 'announcements', 'news'));
 	}
 
 	/**
@@ -62,7 +65,11 @@ class EventsController extends Controller {
 		{
 			$attendee = Attendee::where('user_id', Auth::user()->id)->where('event_id', $id)->pluck('user_id');
 		}
-		return view('events.details', compact('article', 'comments', 'count', 'attendee'));
+
+		$announcements = Post::where('module_id', '=', '2')->orderBy('created_at', 'desc')->take(3)->get();
+		$news = Post::where('module_id', '=', '1')->where('status', '=', '1')->orderBy('created_at', 'desc')->take(3)->get();
+
+		return view('events.details', compact('article', 'comments', 'count', 'attendee', 'announcements', 'news'));
 	}
 
 	public function eventcomment($id)
